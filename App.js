@@ -27,38 +27,9 @@ export default class App extends React.Component {
   render() {
     return (
       <Container>
-        <Content>
-          <Swiper
-          loop={true}
-          showsPagination={false}
-          index={1}
-          >
-            <View style={styles.slideDefault}>
-              <Text style={styles.text}>Chat</Text>
+            <View style={styles.container}>
+              <CameraComponent ></CameraComponent>
             </View>
-            <Swiper
-            loop={false}
-            showsPagination={false}
-            horizontal={false}
-            index={1}
-            onIndexChanged={(index)=> this.verticalScroll(index)}
-            >
-            <View style={styles.slideDefault}>
-            <Text style={styles.text}>Stories</Text>
-            </View>
-            <View style={styles.slideDefault}>
-              <CameraComponent></CameraComponent>
-            </View>
-            <View style={styles.slideDefault}>
-            <Text style={styles.text}>Memories</Text>
-            </View>
-            </Swiper>
-
-            <View style={styles.slideDefault}>
-            <Text style={styles.text}>Stories</Text>
-            </View>
-          </Swiper>
-        </Content>
       </Container>
     );
   }
@@ -70,16 +41,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  slideDefault: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#BADA55',
   },
-  text: {
-    fontSize: 100,
-    fontWeight: 'bold',
-    fontFamily: 'Futura'
-  }
+
 });
