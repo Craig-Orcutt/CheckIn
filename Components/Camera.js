@@ -3,8 +3,8 @@ import {
     View,
     Text,
     StyleSheet,
-    Image,
-    Button
+    Button,
+    ImageBackground
 } from 'react-native';
 import {Camera, Permissions, ImagePicker, MailComposer} from 'expo';
 const { emailCreds } = require('./Email')
@@ -14,18 +14,6 @@ class CameraComponent extends Component{
         chosenImage: null,
         takenImage: null
     }
-    _launchCameraRollAsyc = async () => {
-        let {status} = await Expo.Permissions.askAsync(Expo.Permissions.CAMERA_ROLL)
-        if(status !== 'granted'){
-            console.log('Camera Roll perms not granted', );
-            return;
-        }
-
-        let img = await Expo.ImagePicker.launchImageLibraryAsync();
-        this.setState({chosenImage: img})
-        console.log('image thi', img);
-    }
-
 
     _launchCameraAsync = async () => {
         let {status} = await Expo.Permissions.askAsync(Expo.Permissions.CAMERA);
@@ -52,19 +40,15 @@ class CameraComponent extends Component{
 
     render(){
         return (
-            <View>
-
-
+            <View style={styles.container}>
+ 
                 <Button title="Launch Camera"
                 onPress={()=>{
                     this._launchCameraAsync()
-                    .then((data)=>{
-                        console.log('data');
+                    .then(()=>{
                         this._launchMailCompose();
                     })
                 }} />
-
-
 
                 </View>
             );
@@ -81,25 +65,27 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    mainPage : {
+        
     }
 })
 
-// <View style={styles.container}>
-                
 
 
 
-// </View>
-// );
-// { (this.state.takenImage &&
-// <Image 
-//     source={{uri: this.state.takenImage.uri}}
-//     style={{
-//         height: 200,
-//         width: 200,
-//     }}
-//     />) || 
-//     null}
 
 
+
+// _launchCameraRollAsyc = async () => {
+//     let {status} = await Expo.Permissions.askAsync(Expo.Permissions.CAMERA_ROLL)
+//     if(status !== 'granted'){
+//         console.log('Camera Roll perms not granted', );
+//         return;
+//     }
+
+//     let img = await Expo.ImagePicker.launchImageLibraryAsync();
+//     this.setState({chosenImage: img})
+//     console.log('image thi', img);
+// }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { Container, Content } from 'native-base';
 import Swiper from 'react-native-swiper';
 import CameraComponent from './Components/Camera';
@@ -26,10 +26,13 @@ export default class App extends React.Component {
   }
   render() {
     return (
+      
       <Container>
-            <View style={styles.container}>
-              <CameraComponent ></CameraComponent>
-            </View>
+      <View style={styles.container}>
+      <ImageBackground source={require('./assets/checkIn4.png')} style={{width: 440, height: 800}}>
+              <CameraComponent style={styles.cameraButton}></CameraComponent>
+              </ImageBackground>
+              </View>
       </Container>
     );
   }
@@ -43,5 +46,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#BADA55',
   },
+  cameraButton: {
+    flex: 1,
+    margin: 50
+  }
 
 });
