@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { Container, Content } from 'native-base';
 import Swiper from 'react-native-swiper';
 import CameraComponent from './Components/Camera';
@@ -26,39 +26,13 @@ export default class App extends React.Component {
   }
   render() {
     return (
+      
       <Container>
-        <Content>
-          <Swiper
-          loop={true}
-          showsPagination={false}
-          index={1}
-          >
-            <View style={styles.slideDefault}>
-              <Text style={styles.text}>Chat</Text>
-            </View>
-            <Swiper
-            loop={false}
-            showsPagination={false}
-            horizontal={false}
-            index={1}
-            onIndexChanged={(index)=> this.verticalScroll(index)}
-            >
-            <View style={styles.slideDefault}>
-            <Text style={styles.text}>Stories</Text>
-            </View>
-            <View style={styles.slideDefault}>
-              <CameraComponent></CameraComponent>
-            </View>
-            <View style={styles.slideDefault}>
-            <Text style={styles.text}>Memories</Text>
-            </View>
-            </Swiper>
-
-            <View style={styles.slideDefault}>
-            <Text style={styles.text}>Stories</Text>
-            </View>
-          </Swiper>
-        </Content>
+      <View style={styles.container}>
+      <ImageBackground source={require('./assets/checkIn4.png')} style={{width: 440, height: 800}}>
+              <CameraComponent style={styles.cameraButton}></CameraComponent>
+              </ImageBackground>
+              </View>
       </Container>
     );
   }
@@ -70,16 +44,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  slideDefault: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#BADA55',
   },
-  text: {
-    fontSize: 100,
-    fontWeight: 'bold',
-    fontFamily: 'Futura'
+  cameraButton: {
+    flex: 1,
+    margin: 50
   }
+
 });
