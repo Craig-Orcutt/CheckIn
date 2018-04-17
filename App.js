@@ -30,7 +30,7 @@ export default class App extends React.Component {
       <Container>
       <View style={styles.container}>
       <ImageBackground source={require('./assets/checkIn4.png')} style={{width: 440, height: 800}}>
-              <CameraComponent style={styles.cameraButton}></CameraComponent>
+              <CameraComponent></CameraComponent>
               </ImageBackground>
               </View>
       </Container>
@@ -44,11 +44,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#BADA55',
+    // backgroundColor: '#BADA55',
   },
-  cameraButton: {
-    flex: 1,
-    margin: 50
-  }
+
 
 });
