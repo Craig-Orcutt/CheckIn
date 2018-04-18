@@ -61,25 +61,28 @@ class CameraComponent extends Component {
     console.log("location in getCurrentLocation", this.state.located);
 
     let geoCode = Expo.Location.reverseGeocodeAsync(this.state.located).then(
-      data => {
-        // let geoCodeData = { ...this.state.geoCodeData };
-        // this.setState(prevState => ({
-        //   // using spread operator again to update the state of the object 'geoCode'. need to figure out how to get it out of an array :)
-        //   geoCodeData: {
-        //     ...prevState.geoCodeData,
-        //     address: data.name,
-        //     city: data.city,
-        //     state: data.region
-        //   }
-        // }));
-        console.log("geoCode", data);
+      ([data]) => {
+        let geoCodeData = { ...this.state.geoCodeData };
+        console.log("data", data);
+
+        this.setState(prevState => ({
+          // using spread operator again to update the state of the object 'geoCode'. need to figure out how to get it out of an array :)
+          geoCodeData: {
+            ...prevState.geoCodeData,
+            address: data.name,
+            city: data.city,
+            state: data.region
+          }
+        }));
+        // console.log("geoCode", data[0]);
+        console.log("geoData", this.state.geoCodeData);
       }
     );
   };
 
   _launchGetGeoCode = async () => {
     // need to get the lat and long out of the
-    // let geoCode = await Expo.Location.reverseGeocodeAsync(this.state.located);
+    // let geoCode = awaitExpo.Location.reverseGeocodeAsync(this.state.located);
     // let geoCodeLat = this.state.located.latitude;
     // let geoCodeLong = this.state.located.longitude;
     // console.log("geo", geoCodeLat);
