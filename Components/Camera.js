@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Camera, Permissions, ImagePicker, MailComposer } from "expo";
+import { Camera, Permissions, ImagePicker, MailComposer, Location } from "expo";
 const { emailCreds } = require("./Email");
 
 class CameraComponent extends Component {
   state = {
-    chosenImage: null
-    // takenImage: null
+    takenImage: null,
+    located: {
+      locationLongitude: null,
+      locationLatitude: null
+    }
   };
 
   _launchCameraAsync = async () => {
@@ -17,8 +20,8 @@ class CameraComponent extends Component {
     }
     let img = await Expo.ImagePicker.launchCameraAsync({});
     this.setState({ takenImage: img });
-    console.log("takenImg", img);
   };
+
   _launchMailCompose = async () => {
     let timeStamp = Date(Date.now() / 1000).toLocaleString();
     let mail = await Expo.MailComposer.composeAsync({
@@ -30,6 +33,36 @@ class CameraComponent extends Component {
     });
   };
 
+  _launchGetCurrentLocation = async () => {
+    let { status } = await Expo.Permissions.askAsync(Expo.Permissions.LOCATION);
+    if (status !== "granted") {
+      console.log("Location perms not granted");
+      return;
+    }
+    let locale = await Expo.Location.getCurrentPositionAsync({
+      enableHighAccuracy: true
+    });
+    // Using spread operator to make copy of located object in state
+    let located = { ...this.state.located };
+    this.setState(prevState => ({
+      // using spread operator again to update the state of the object 'Located' :)
+      located: {
+        ...prevState.located,
+        locationLongitude: locale.coords.longitude,
+        locationLatitude: locale.coords.latitude
+      }
+    }));
+    // this.setState({
+    //   ...this.state.located,
+    //   locationLongitude: locale.coords.longitude
+    // });
+    // this.setState({
+    //   ...this.state.located,
+    //   locationLatitude: locale.coords.latitude
+    // });
+    console.log("location in getCurrentLocation", this.state.located);
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -37,6 +70,7 @@ class CameraComponent extends Component {
           style={styles.button}
           onPress={() => {
             this._launchCameraAsync().then(() => {
+              this._launchGetCurrentLocation();
               if (this.state.takenImage.cancelled !== true) {
                 this._launchMailCompose();
               } else {
