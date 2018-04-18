@@ -77,9 +77,9 @@ class CameraComponent extends Component {
     );
   };
 
-  _launchGetGeoCode = () => {
+  _launchGetGeoCode = async () => {
     // need to get the lat and long out of the
-    // let geoCode = Expo.Location.reverseGeocodeAsync(this.state.located);
+    // let geoCode = await Expo.Location.reverseGeocodeAsync(this.state.located);
     // let geoCodeLat = this.state.located.latitude;
     // let geoCodeLong = this.state.located.longitude;
     // console.log("geo", geoCodeLat);
