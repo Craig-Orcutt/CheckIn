@@ -7,8 +7,13 @@ class CameraComponent extends Component {
   state = {
     takenImage: null,
     located: {
-      locationLongitude: null,
-      locationLatitude: null
+      latitude: null,
+      longitude: null
+    },
+    geoCodeData: {
+      address: null,
+      city: null,
+      state: null
     }
   };
 
@@ -37,30 +42,52 @@ class CameraComponent extends Component {
     let { status } = await Expo.Permissions.askAsync(Expo.Permissions.LOCATION);
     if (status !== "granted") {
       console.log("Location perms not granted");
-      return;
     }
-    let locale = await Expo.Location.getCurrentPositionAsync({
+    let geoLocationOption = {
       enableHighAccuracy: true
-    });
+    };
+    let locale = await Expo.Location.getCurrentPositionAsync(geoLocationOption);
+    console.log("locale", locale);
+
     // Using spread operator to make copy of located object in state
     let located = { ...this.state.located };
     this.setState(prevState => ({
       // using spread operator again to update the state of the object 'Located' :)
       located: {
         ...prevState.located,
-        locationLongitude: locale.coords.longitude,
-        locationLatitude: locale.coords.latitude
+        longitude: locale.coords.longitude,
+        latitude: locale.coords.latitude
       }
     }));
-    // this.setState({
-    //   ...this.state.located,
-    //   locationLongitude: locale.coords.longitude
-    // });
-    // this.setState({
-    //   ...this.state.located,
-    //   locationLatitude: locale.coords.latitude
-    // });
+
     console.log("location in getCurrentLocation", this.state.located);
+
+    let geoCode = Expo.Location.reverseGeocodeAsync(this.state.located).then(
+      ([data]) => {
+        let geoCodeData = { ...this.state.geoCodeData };
+        console.log("data", data);
+
+        this.setState(prevState => ({
+          // using spread operator again to update the state of the object 'geoCode'. need to figure out how to get it out of an array :)
+          geoCodeData: {
+            ...prevState.geoCodeData,
+            address: data.name,
+            city: data.city,
+            state: data.region
+          }
+        }));
+        // console.log("geoCode", data[0]);
+        console.log("geoData", this.state.geoCodeData);
+      }
+    );
+  };
+
+  _launchGetGeoCode = async () => {
+    // need to get the lat and long out of the
+    // let geoCode = awaitExpo.Location.reverseGeocodeAsync(this.state.located);
+    // let geoCodeLat = this.state.located.latitude;
+    // let geoCodeLong = this.state.located.longitude;
+    // console.log("geo", geoCodeLat);
   };
 
   render() {
