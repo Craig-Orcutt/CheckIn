@@ -42,11 +42,13 @@ class CameraComponent extends Component {
     let { status } = await Expo.Permissions.askAsync(Expo.Permissions.LOCATION);
     if (status !== "granted") {
       console.log("Location perms not granted");
-      return;
     }
-    let locale = await Expo.Location.getCurrentPositionAsync({
+    let geoLocationOption = {
       enableHighAccuracy: true
-    });
+    };
+    let locale = await Expo.Location.getCurrentPositionAsync(geoLocationOption);
+    console.log("locale", locale);
+
     // Using spread operator to make copy of located object in state
     let located = { ...this.state.located };
     this.setState(prevState => ({
