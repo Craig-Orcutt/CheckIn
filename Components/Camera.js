@@ -17,6 +17,29 @@ class CameraComponent extends Component {
     }
   };
 
+  componentWillMount = () => {
+    this.getCurrentLocation();
+    // this.launchCameraAsync();
+  };
+  getCurrentLocation = () =>
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        console.log("position", position);
+
+        let currentUserPosition = position.coords;
+        alert(JSON.stringify(currentUserPosition));
+      },
+      error => {
+        console.log(error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 0,
+        distanceFilter: 10
+      }
+    );
+
   _launchCameraAsync = async () => {
     let { status } = await Expo.Permissions.askAsync(Expo.Permissions.CAMERA);
     if (status !== "granted") {
@@ -46,7 +69,9 @@ class CameraComponent extends Component {
     let geoLocationOption = {
       enableHighAccuracy: true
     };
-    let locale = await Expo.Location.getCurrentPositionAsync(geoLocationOption);
+    let locale = await Expo.Location.getCurrentPositionAsync({
+      enableHighAccuracy: true
+    });
     console.log("locale", locale);
 
     // Using spread operator to make copy of located object in state
