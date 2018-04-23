@@ -70,7 +70,9 @@ class CameraComponent extends Component {
       enableHighAccuracy: true
     };
     let locale = await Expo.Location.getCurrentPositionAsync({
-      enableHighAccuracy: true
+      enableHighAccuracy: true,
+      timeout: 20000,
+      maximumAge: 1000
     });
     console.log("locale", locale);
 
