@@ -18,7 +18,7 @@ class CameraComponent extends Component {
   };
 
   componentWillMount = () => {
-    this.getCurrentLocation();
+    // this.getCurrentLocation();
     // this.launchCameraAsync();
   };
   getCurrentLocation = () =>
@@ -50,16 +50,7 @@ class CameraComponent extends Component {
     this.setState({ takenImage: img });
   };
 
-  _launchMailCompose = async () => {
-    let timeStamp = Date(Date.now() / 1000).toLocaleString();
-    let mail = await Expo.MailComposer.composeAsync({
-      recipients: [emailCreds],
-      subject: `${timeStamp}`,
-      attachments: [this.state.takenImage.uri]
-    }).then(data => {
-      console.log("data", data);
-    });
-  };
+
 
   _launchGetCurrentLocation = async () => {
     let { status } = await Expo.Permissions.askAsync(Expo.Permissions.LOCATION);
@@ -89,7 +80,7 @@ class CameraComponent extends Component {
 
     console.log("location in getCurrentLocation", this.state.located);
 
-    let geoCode = Expo.Location.reverseGeocodeAsync(this.state.located).then(
+    let geoCode = await Expo.Location.reverseGeocodeAsync(this.state.located).then(
       ([data]) => {
         let geoCodeData = { ...this.state.geoCodeData };
         console.log("data", data);
@@ -109,13 +100,21 @@ class CameraComponent extends Component {
     );
   };
 
-  _launchGetGeoCode = async () => {
-    // need to get the lat and long out of the
-    // let geoCode = awaitExpo.Location.reverseGeocodeAsync(this.state.located);
-    // let geoCodeLat = this.state.located.latitude;
-    // let geoCodeLong = this.state.located.longitude;
-    // console.log("geo", geoCodeLat);
+  _launchMailCompose = async () => {
+    let timeStamp = Date(Date.now() / 1000).toLocaleString();
+    let mail = await Expo.MailComposer.composeAsync({
+      recipients: [emailCreds],
+      subject: `${timeStamp}`,
+      body: `     ${this.state.geoCodeData.address}
+             ${this.state.geoCodeData.city},${this.state.geoCodeData.state}`,
+      attachments: [this.state.takenImage.uri]
+    }).then(data => {
+      console.log("data", data);
+    });
   };
+
+
+
 
   render() {
     return (
@@ -124,12 +123,14 @@ class CameraComponent extends Component {
           style={styles.button}
           onPress={() => {
             this._launchCameraAsync().then(() => {
-              this._launchGetCurrentLocation();
-              if (this.state.takenImage.cancelled !== true) {
-                this._launchMailCompose();
-              } else {
-                return;
-              }
+              this._launchGetCurrentLocation()
+              .then(()=>{
+                if (this.state.takenImage.cancelled !== true) {
+                  this._launchMailCompose();
+                } else {
+                  return;
+                }
+              })
             });
           }}
         >
