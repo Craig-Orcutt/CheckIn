@@ -41,7 +41,7 @@ class CameraComponent extends Component {
     );
 
   _launchCameraAsync = async () => {
-    let { status } = await Expo.Permissions.askAsync(Expo.Permissions.CAMERA);
+    let { status } = await Expo.Permissions.askAsync(Permissions.CAMERA_ROLL);
     if (status !== "granted") {
       console.log("Camera perms not granted");
       return;
